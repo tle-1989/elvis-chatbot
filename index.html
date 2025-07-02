@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elvis Presley Chatbot</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+      padding: 0;
+      margin: 0;
+    }
+    header {
+      background-color: #111;
+      text-align: center;
+      padding: 1em;
+      font-size: 1.5em;
+    }
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2em;
+    }
+    textarea {
+      width: 100%;
+      height: 300px;
+      margin-bottom: 1em;
+      padding: 1em;
+      background-color: #2e2e2e;
+      color: #fff;
+      border: none;
+      resize: none;
+    }
+    input, button {
+      padding: 0.75em;
+      font-size: 1em;
+      margin-top: 0.5em;
+    }
+    input {
+      width: calc(100% - 120px);
+      border: none;
+      background-color: #333;
+      color: #fff;
+    }
+    button {
+      width: 100px;
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <header>🕺 Talk to Elvis Presley</header>
+  <main>
+    <textarea id="chatLog" readonly>Elvis Presley: Hey there, I'm the King of Rock 'n' Roll. Ask me anything about my life!
+</textarea><br>
+    <input type="text" id="userInput" placeholder="Type your question..." />
+    <button onclick="sendMessage()">Send</button>
+  </main>
+
+  <script>
+    async function sendMessage() {
+      const inputField = document.getElementById('userInput');
+      const chatLog = document.getElementById('chatLog');
+      const userMessage = inputField.value;
+      if (!userMessage) return;
+
+      chatLog.value += "You: " + userMessage + "\n";
+      inputField.value = "";
+
+      // Fake Elvis response (replace with API call)
+      const elvisResponse = await getElvisReply(userMessage);
+      chatLog.value += "Elvis Presley: " + elvisResponse + "\n";
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    async function getElvisReply(question) {
+      // Simulated responses — in a real setup, fetch from OpenAI or other API with custom persona
+      const responses = {
+        "who are you": "I'm Elvis Presley, the King of Rock 'n' Roll, baby.",
+        "when were you born": "I was born on January 8, 1935, in Tupelo, Mississippi.",
+        "favorite song": "Hard to pick just one, but 'Can't Help Falling in Love' is always a fan favorite.",
+        "how did you die": "I passed away on August 16, 1977, at Graceland. But my music lives on!",
+      };
+
+      const lowerQ = question.toLowerCase();
+      for (const key in responses) {
+        if (lowerQ.includes(key)) return responses[key];
+      }
+
+      return "Well, that's a mighty fine question. I lived quite the life, you know. Check out my biography for more!";
+    }
+  </script>
+</body>
+</html>
