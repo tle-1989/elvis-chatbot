@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Interactive Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .tool-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .tool-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .tool-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .feature-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin: 60px 0 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .category-nav {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Tools Showcase</h1>
+            <p>Discover the power of artificial intelligence across various domains</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search AI tools..." id="searchInput">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="category-nav">
+            <button class="nav-btn active" onclick="showCategory('all')">All Tools</button>
+            <button class="nav-btn" onclick="showCategory('general')">General AI Tools</button>
+            <button class="nav-btn" onclick="showCategory('education')">Education Tools</button>
+        </div>
+
+        <div id="generalTools">
+            <div class="tools-grid">
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🕵️</div>
+                        <div class="tool-name">AI Detector Tool</div>
+                    </div>
+                    <div class="tool-description">
+                        Advanced detection system that identifies AI-generated content with high accuracy, helping maintain authenticity in written work.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Content Analysis</span>
+                        <span class="feature-tag">Plagiarism Detection</span>
+                        <span class="feature-tag">Authenticity Check</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🎨</div>
+                        <div class="tool-name">Beautiful.ai</div>
+                    </div>
+                    <div class="tool-description">
+                        Intelligent presentation design platform that creates stunning slides automatically, transforming your content into professional presentations.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Auto-Design</span>
+                        <span class="feature-tag">Templates</span>
+                        <span class="feature-tag">Collaboration</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🏷️</div>
+                        <div class="tool-name">BrandMark</div>
+                    </div>
+                    <div class="tool-description">
+                        AI-powered logo and brand identity generator that creates unique, professional logos and branding materials in minutes.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Logo Design</span>
+                        <span class="feature-tag">Brand Identity</span>
+                        <span class="feature-tag">Customization</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🖌️</div>
+                        <div class="tool-name">Brushless.AI</div>
+                    </div>
+                    <div class="tool-description">
+                        Revolutionary digital art creation tool that generates high-quality artwork and illustrations using advanced AI algorithms.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Digital Art</span>
+                        <span class="feature-tag">Style Transfer</span>
+                        <span class="feature-tag">Custom Brushes</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🤖</div>
+                        <div class="tool-name">Claude Sonnet 3.5</div>
+                    </div>
+                    <div class="tool-description">
+                        Advanced conversational AI assistant capable of complex reasoning, creative writing, and problem-solving across multiple domains.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Conversation</span>
+                        <span class="feature-tag">Code Generation</span>
+                        <span class="feature-tag">Analysis</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">⚡</div>
+                        <div class="tool-name">Corcel AI</div>
+                    </div>
+                    <div class="tool-description">
+                        Comprehensive AI powerhouse platform offering multiple AI capabilities including text generation, image creation, and data analysis.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Multi-Modal</span>
+                        <span class="feature-tag">API Access</span>
+                        <span class="feature-tag">Automation</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🔍</div>
+                        <div class="tool-name">Deepseek LLM</div>
+                    </div>
+                    <div class="tool-description">
+                        Powerful large language model designed for deep understanding and generation of human-like text across various applications.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Deep Learning</span>
+                        <span class="feature-tag">Text Generation</span>
+                        <span class="feature-tag">Reasoning</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">💎</div>
+                        <div class="tool-name">Gemini</div>
+                    </div>
+                    <div class="tool-description">
+                        Google's advanced multimodal AI model that can understand and generate text, images, and code with exceptional capability.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Multimodal</span>
+                        <span class="feature-tag">Code Understanding</span>
+                        <span class="feature-tag">Vision</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🧙</div>
+                        <div class="tool-name">Goblin Tools</div>
+                    </div>
+                    <div class="tool-description">
+                        Collection of AI-powered productivity tools designed to help with task management, scheduling, and personal organization.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Task Management</span>
+                        <span class="feature-tag">Scheduling</span>
+                        <span class="feature-tag">Organization</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🚀</div>
+                        <div class="tool-name">GROK</div>
+                    </div>
+                    <div class="tool-description">
+                        Real-time AI assistant with access to current information, designed for dynamic conversations and up-to-date knowledge.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Real-time Data</span>
+                        <span class="feature-tag">Current Events</span>
+                        <span class="feature-tag">Interactive</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">👤</div>
+                        <div class="tool-name">Heygen Avatar Generator</div>
+                    </div>
+                    <div class="tool-description">
+                        Creates realistic AI avatars and digital humans for presentations, videos, and interactive applications.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Avatar Creation</span>
+                        <span class="feature-tag">Video Generation</span>
+                        <span class="feature-tag">Customization</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">✍️</div>
+                        <div class="tool-name">Writing Style AI</div>
+                    </div>
+                    <div class="tool-description">
+                        Trains AI models to adopt and replicate your unique writing style, maintaining consistency across all your content.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Style Learning</span>
+                        <span class="feature-tag">Consistency</span>
+                        <span class="feature-tag">Personalization</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🎭</div>
+                        <div class="tool-name">Ideogram 2.0</div>
+                    </div>
+                    <div class="tool-description">
+                        Advanced text-to-image AI generator that creates stunning visuals, logos, and artwork from textual descriptions.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Text-to-Image</span>
+                        <span class="feature-tag">Logo Generation</span>
+                        <span class="feature-tag">High Quality</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🎬</div>
+                        <div class="tool-name">Kinetix.tech</div>
+                    </div>
+                    <div class="tool-description">
+                        AI-powered animation and motion graphics platform that brings static content to life with professional animations.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Animation</span>
+                        <span class="feature-tag">Motion Graphics</span>
+                        <span class="feature-tag">3D Effects</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🗺️</div>
+                        <div class="tool-name">Mapify</div>
+                    </div>
+                    <div class="tool-description">
+                        Intelligent mind mapping and visualization tool that transforms complex information into clear, interactive visual maps.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Mind Mapping</span>
+                        <span class="feature-tag">Visualization</span>
+                        <span class="feature-tag">Collaboration</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🎤</div>
+                        <div class="tool-name">SpeechMA AI</div>
+                    </div>
+                    <div class="tool-description">
+                        Advanced speech recognition and voice processing AI that converts speech to text with high accuracy and natural language understanding.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Speech Recognition</span>
+                        <span class="feature-tag">Voice Processing</span>
+                        <span class="feature-tag">Multi-language</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">🏫</div>
+                        <div class="tool-name">Teachable Machine</div>
+                    </div>
+                    <div class="tool-description">
+                        Google's user-friendly platform for training custom machine learning models without coding expertise required.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">No-Code ML</span>
+                        <span class="feature-tag">Custom Models</span>
+                        <span class="feature-tag">Interactive</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="general">
+                    <div class="tool-header">
+                        <div class="tool-icon">💬</div>
+                        <div class="tool-name">Awesome ChatGPT</div>
+                    </div>
+                    <div class="tool-description">
+                        Comprehensive collection of ChatGPT resources, prompts, and tools to maximize productivity and creative potential.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Resource Collection</span>
+                        <span class="feature-tag">Prompt Library</span>
+                        <span class="feature-tag">Community</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">AI Tools Designed for Education</div>
+        
+        <div id="educationTools">
+            <div class="tools-grid">
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">⚗️</div>
+                        <div class="tool-name">Chemequations AI Solver</div>
+                    </div>
+                    <div class="tool-description">
+                        Advanced chemistry problem solver that balances equations, predicts reactions, and provides step-by-step solutions for complex chemical problems.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Equation Balancing</span>
+                        <span class="feature-tag">Reaction Prediction</span>
+                        <span class="feature-tag">Step-by-Step</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">📚</div>
+                        <div class="tool-name">Histography AI</div>
+                    </div>
+                    <div class="tool-description">
+                        Interactive historical timeline generator that creates engaging visual narratives of historical events and periods.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Timeline Creation</span>
+                        <span class="feature-tag">Visual Learning</span>
+                        <span class="feature-tag">Historical Analysis</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">🔗</div>
+                        <div class="tool-name">Microsoft Co-Pilot</div>
+                    </div>
+                    <div class="tool-description">
+                        Integrated AI assistant across Microsoft Office suite that enhances productivity in Word, Excel, PowerPoint, and other applications.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Office Integration</span>
+                        <span class="feature-tag">Productivity</span>
+                        <span class="feature-tag">Document Analysis</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">📖</div>
+                        <div class="tool-name">NotebookLM</div>
+                    </div>
+                    <div class="tool-description">
+                        Google's AI-powered research and note-taking assistant that helps organize, analyze, and synthesize information from multiple sources.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Research Assistant</span>
+                        <span class="feature-tag">Note Organization</span>
+                        <span class="feature-tag">Source Analysis</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">🔍</div>
+                        <div class="tool-name">Perplexity AI</div>
+                    </div>
+                    <div class="tool-description">
+                        AI-powered search and research engine that provides accurate, cited answers to complex questions with real-time information.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Research Engine</span>
+                        <span class="feature-tag">Real-time Info</span>
+                        <span class="feature-tag">Citation</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">🎬</div>
+                        <div class="tool-name">Runway AI Tools</div>
+                    </div>
+                    <div class="tool-description">
+                        Comprehensive suite of AI-powered video editing and creation tools for educational content, presentations, and multimedia projects.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Video Editing</span>
+                        <span class="feature-tag">Content Creation</span>
+                        <span class="feature-tag">Multimedia</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">🗣️</div>
+                        <div class="tool-name">SpeechMA AI - Text-to-Voice</div>
+                    </div>
+                    <div class="tool-description">
+                        Advanced text-to-speech technology that creates natural-sounding voiceovers for educational content and accessibility purposes.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Text-to-Speech</span>
+                        <span class="feature-tag">Natural Voice</span>
+                        <span class="feature-tag">Accessibility</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">🎓</div>
+                        <div class="tool-name">Studyfetch</div>
+                    </div>
+                    <div class="tool-description">
+                        Comprehensive AI tutoring platform that provides personalized learning experiences, homework help, and study guidance across all subjects.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">AI Tutoring</span>
+                        <span class="feature-tag">Personalized Learning</span>
+                        <span class="feature-tag">Multi-Subject</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">🏗️</div>
+                        <div class="tool-name">Openart AI - CAD Tool</div>
+                    </div>
+                    <div class="tool-description">
+                        AI-enhanced computer-aided design platform for engineering and design education, simplifying complex 3D modeling and technical drawing.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">CAD Design</span>
+                        <span class="feature-tag">3D Modeling</span>
+                        <span class="feature-tag">Technical Drawing</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">🧮</div>
+                        <div class="tool-name">Symbolab</div>
+                    </div>
+                    <div class="tool-description">
+                        Advanced mathematics solver that provides step-by-step solutions for algebra, calculus, statistics, and other mathematical problems.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Math Solver</span>
+                        <span class="feature-tag">Step-by-Step</span>
+                        <span class="feature-tag">Multiple Subjects</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="education">
+                    <div class="tool-header">
+                        <div class="tool-icon">🔬</div>
+                        <div class="tool-name">Wolfram AI</div>
+                    </div>
+                    <div class="tool-description">
+                        Computational knowledge engine that provides expert-level answers and computations across mathematics, science, and engineering.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag">Computational Engine</span>
+                        <span class="feature-tag">Expert Knowledge</span>
+                        <span class="feature-tag">Scientific Computing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCategory(category) {
+            const allCards = document.querySelectorAll('.tool-card');
+            const navBtns = document.querySelectorAll('.nav-btn');
+            
+            // Remove active class from all nav buttons
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Show/hide cards based on category
+            allCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const allCards = document.querySelectorAll('.tool-card');
+            
+            allCards.forEach(card => {
+                const toolName = card.querySelector('.tool-name').textContent.toLowerCase();
+                const toolDescription = card.querySelector('.tool-description').textContent.toLowerCase();
+                const features = Array.from(card.querySelectorAll('.feature-tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
+                
+                if (toolName.includes(searchTerm) || toolDescription.includes(searchTerm) || features.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Add smooth scrolling animation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
